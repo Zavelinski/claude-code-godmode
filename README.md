@@ -96,4 +96,6 @@ MIT. See [LICENSE](LICENSE).
 
 ---
 
-Part of the **[claude-code-skills](https://github.com/Zavelinski/claude-code-skills)** collection: a suite of focused, original Claude Code skills. See [Install, Option 1](#option-1--as-a-plugin-recommended) for the one-command plugin setup.
+## Part of claude-code-skills
+
+This skill ships in the [claude-code-skills](https://zavelinski.github.io/claude-code-skills/) marketplace. Browse its landing page: [godmode](https://zavelinski.github.io/claude-code-skills/godmode.html). See also: [adversarial-verify](https://github.com/Zavelinski/claude-code-adversarial-verify), [salve](https://github.com/Zavelinski/claude-code-salve).
