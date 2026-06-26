@@ -15,31 +15,39 @@ It stays on across long sessions because a small `UserPromptSubmit` hook re-inje
 |------|--------------|---------|
 | `skills/godmode/SKILL.md` | `~/.claude/skills/godmode/` | The on-demand ritual Claude reads when you say `godmode`. |
 | `skills/best-tool/SKILL.md` | `~/.claude/skills/best-tool/` | The per-task "pick the best capability" ritual godmode runs every time. |
-| `hooks/godmode-tracker.js` | `~/.claude/hooks/` | Toggles the flag and re-injects the directive each turn while active. |
-| `settings.json` entry | `~/.claude/settings.json` | Registers the hook under `UserPromptSubmit` (merged in, never clobbered). |
+| `hooks/godmode-tracker.js` | `~/.claude/hooks/` (script) or plugin root (plugin) | Toggles the flag and re-injects the directive each turn while active. |
+| `hooks/hooks.json` | registered on `/plugin install` | Wires the hook into Claude Code through the plugin's official hook mechanism (no `settings.json` edit). |
+| `settings.json` entry | `~/.claude/settings.json` (script install only) | Registers the hook under `UserPromptSubmit` (merged in, never clobbered). |
 
 ## Install
 
-Clone, then run the installer for your OS.
+### Option 1 — as a plugin (recommended)
+
+Install through Claude Code's own plugin flow, so you explicitly consent to the hook:
+
+```bash
+/plugin marketplace add Zavelinski/claude-code-skills
+/plugin install godmode@claude-code-skills
+```
+
+Restart Claude Code and say `godmode`. This installs the two skills **and** registers the `UserPromptSubmit` hook through Claude Code's official, opt-in plugin mechanism, no manual `settings.json` editing.
+
+### Option 2 — script installer
+
+Clone and run the installer for your OS:
 
 ```bash
 git clone https://github.com/Zavelinski/claude-code-godmode.git
 cd claude-code-godmode
+bash install.sh        # macOS / Linux
+.\install.ps1          # Windows (PowerShell)
 ```
 
-**macOS / Linux**
-```bash
-bash install.sh
-```
+> **Run this yourself, in an interactive shell.** `install.sh` registers a `UserPromptSubmit` hook and merges an entry into your `~/.claude/settings.json`. If you ask an AI agent to run it, Claude Code's auto-mode will (correctly) **block** it: a third-party script that installs a per-turn prompt-injecting hook is exactly what that protection exists for. The block is expected, not a bug. Read the code, then run it yourself, or use Option 1.
 
-**Windows (PowerShell)**
-```powershell
-.\install.ps1
-```
+> Requires Node.js. The installer uses the same node binary that runs it, so the hook works even if `node` is not on PATH inside hook subprocesses (a common Windows gotcha).
 
 Then **restart Claude Code** (so it picks up the new skill and hook) and say `godmode`.
-
-> Requires Node.js (already a prerequisite for Claude Code hooks). The installer uses the same node binary that runs it, so the hook works even if `node` is not on PATH inside hook subprocesses (a common Windows gotcha).
 
 ## Use
 
@@ -77,7 +85,9 @@ cp variants/pt-br/SKILL.md           ~/.claude/skills/godmode/SKILL.md
 
 ## How it works (security note)
 
-The hook is ~60 lines of Node. On every prompt it: reads the prompt text, flips the flag file on/off when it sees `godmode` / `godmode off`, and — while active — prints the directive as `additionalContext`. It makes **no network calls**, touches only `~/.claude/.godmode-active`, and fails silently so it can never break your prompt. Read [`hooks/godmode-tracker.js`](hooks/godmode-tracker.js) before installing if you like (you should, for any hook).
+The hook is ~60 lines of Node. On every prompt it: reads the prompt text, flips the flag file on/off when it sees `godmode` / `godmode off`, and — while active — prints the directive as `additionalContext`. It makes **no network calls**, touches only `~/.claude/.godmode-active`, and fails silently so it can never break your prompt. Read [`hooks/godmode-tracker.js`](hooks/godmode-tracker.js) before installing (you should, for any hook).
+
+Be clear-eyed about what this is: a hook that **injects text into every prompt**. That is useful here, and it is also a real capability worth gating. The recommended path (Option 1) installs it through Claude Code's own plugin consent flow; the script path (Option 2) must be run by you, not an agent. Either way you are opting in deliberately. This skill does not, and should not, try to get around Claude Code's safety prompts.
 
 ## License
 
@@ -85,11 +95,4 @@ MIT. See [LICENSE](LICENSE).
 
 ---
 
-## Install as a Claude Code plugin
-
-```bash
-/plugin marketplace add Zavelinski/claude-code-skills
-/plugin install godmode@claude-code-skills
-```
-
-Part of the **[claude-code-skills](https://github.com/Zavelinski/claude-code-skills)** collection: a suite of focused, original Claude Code skills.
+Part of the **[claude-code-skills](https://github.com/Zavelinski/claude-code-skills)** collection: a suite of focused, original Claude Code skills. See [Install, Option 1](#option-1--as-a-plugin-recommended) for the one-command plugin setup.
