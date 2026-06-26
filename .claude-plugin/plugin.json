@@ -1,10 +1,16 @@
 {
   "name": "godmode",
   "description": "One-word max-capability mode: maps and uses the best available tool, stays exhaustive, verifies before claiming done, persists context. Say 'godmode off' to stop.",
-  "version": "1.1.0",
-  "author": { "name": "Zavelinski" },
+  "version": "1.1.1",
+  "author": {
+    "name": "Zavelinski"
+  },
   "homepage": "https://github.com/Zavelinski/claude-code-godmode",
   "repository": "https://github.com/Zavelinski/claude-code-godmode",
   "license": "MIT",
-  "keywords": ["agent-mode","productivity","automation"]
+  "keywords": [
+    "agent-mode",
+    "productivity",
+    "automation"
+  ]
 }
