@@ -82,3 +82,14 @@ The hook is ~60 lines of Node. On every prompt it: reads the prompt text, flips 
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+---
+
+## Install as a Claude Code plugin
+
+```bash
+/plugin marketplace add Zavelinski/claude-code-skills
+/plugin install godmode@claude-code-skills
+```
+
+Part of the **[claude-code-skills](https://github.com/Zavelinski/claude-code-skills)** collection: a suite of focused, original Claude Code skills.
