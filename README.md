@@ -1,5 +1,10 @@
 # godmode for Claude Code
 
+[![License: MIT](https://img.shields.io/github/license/Zavelinski/claude-code-godmode)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/Zavelinski/claude-code-godmode?style=flat)](https://github.com/Zavelinski/claude-code-godmode/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/Zavelinski/claude-code-godmode)](https://github.com/Zavelinski/claude-code-godmode/commits)
+[![Claude Code skill](https://img.shields.io/badge/Claude%20Code-skill-8A2BE2)](https://claude.com/claude-code)
+
 A one-word **max-capability mode** for [Claude Code](https://claude.com/claude-code). Say `godmode` and Claude runs every task at full power for the rest of the session: it maps and uses the *best* available tool (skill / plugin / MCP / agent / workflow) instead of the first that works, stays exhaustive over fast, verifies before claiming done, keeps changes small and reversible, and persists context at the end. Say `godmode off` to stop.
 
 It stays on across long sessions because a small `UserPromptSubmit` hook re-injects the directive on **every turn**, so the behavior never drifts. No drift, no re-typing.
