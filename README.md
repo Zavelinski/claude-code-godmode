@@ -9,6 +9,48 @@ A one-word **max-capability mode** for [Claude Code](https://claude.com/claude-c
 
 It stays on across long sessions because a small `UserPromptSubmit` hook re-injects the directive on **every turn**, so the behavior never drifts. No drift, no re-typing.
 
+## Prerequisites
+
+Claude Code with `/plugin` support (v2.x+) and a shell if you use the manual fallback.
+
+## Install
+
+### Option 1 — Claude Code plugin marketplace (recommended)
+
+```bash
+/plugin marketplace add Zavelinski/claude-code-skills
+/plugin install godmode@claude-code-skills
+```
+
+Registered hooks (if any) install through the Claude Code consent UI, with no manual edit to `~/.claude/settings.json`.
+
+This plugin registers a `UserPromptSubmit` hook. Option 1 registers it through the Claude Code consent UI; Option 2 (`install.sh`) is the path that auto-mode blocks.
+
+### Option 2 — Manual fallback (run it yourself)
+
+> **Security note.** This script mutates `~/.claude/settings.json` directly. Claude Code auto-mode blocks it because a third-party `UserPromptSubmit` hook that injects text into every prompt is a known risk vector. The script is benign and local-only (no network), but you must review and run it yourself. Prefer Option 1.
+
+```bash
+git clone https://github.com/Zavelinski/claude-code-godmode.git
+cd claude-code-godmode
+bash install.sh        # macOS / Linux
+.\install.ps1          # Windows (PowerShell)
+```
+
+## Uninstall
+
+```bash
+/plugin uninstall godmode@claude-code-skills    # Option 1
+bash uninstall.sh                                # Option 2 (or uninstall.ps1 on Windows)
+```
+
+## Update
+
+```bash
+/plugin marketplace update claude-code-skills    # Option 1
+# Option 2: pull the latest commit and re-run the manual fallback.
+```
+
 ## What you get
 
 | File | Installed to | Purpose |
@@ -18,36 +60,6 @@ It stays on across long sessions because a small `UserPromptSubmit` hook re-inje
 | `hooks/godmode-tracker.js` | `~/.claude/hooks/` (script) or plugin root (plugin) | Toggles the flag and re-injects the directive each turn while active. |
 | `hooks/hooks.json` | registered on `/plugin install` | Wires the hook into Claude Code through the plugin's official hook mechanism (no `settings.json` edit). |
 | `settings.json` entry | `~/.claude/settings.json` (script install only) | Registers the hook under `UserPromptSubmit` (merged in, never clobbered). |
-
-## Install
-
-### Option 1 — as a plugin (recommended)
-
-Install through Claude Code's own plugin flow, so you explicitly consent to the hook:
-
-```bash
-/plugin marketplace add Zavelinski/claude-code-skills
-/plugin install godmode@claude-code-skills
-```
-
-Restart Claude Code and say `godmode`. This installs the two skills **and** registers the `UserPromptSubmit` hook through Claude Code's official, opt-in plugin mechanism, no manual `settings.json` editing.
-
-### Option 2 — script installer
-
-Clone and run the installer for your OS:
-
-```bash
-git clone https://github.com/Zavelinski/claude-code-godmode.git
-cd claude-code-godmode
-bash install.sh        # macOS / Linux
-.\install.ps1          # Windows (PowerShell)
-```
-
-> **Run this yourself, in an interactive shell.** `install.sh` registers a `UserPromptSubmit` hook and merges an entry into your `~/.claude/settings.json`. If you ask an AI agent to run it, Claude Code's auto-mode will (correctly) **block** it: a third-party script that installs a per-turn prompt-injecting hook is exactly what that protection exists for. The block is expected, not a bug. Read the code, then run it yourself, or use Option 1.
-
-> Requires Node.js. The installer uses the same node binary that runs it, so the hook works even if `node` is not on PATH inside hook subprocesses (a common Windows gotcha).
-
-Then **restart Claude Code** (so it picks up the new skill and hook) and say `godmode`.
 
 ## Use
 
@@ -62,17 +74,6 @@ When active, every turn carries this directive:
 3. **Discipline stays on.** Verify before saying done; leave evidence; never claim without a check.
 4. **Recovery-first.** Small, visible, reversible changes; escalate sensitive surfaces (production, secrets, data, payments, auth).
 5. **Persist context.** Save notes/decisions/next steps when finishing substantial work.
-
-## Uninstall
-
-```bash
-bash uninstall.sh      # macOS / Linux
-```
-```powershell
-.\uninstall.ps1        # Windows
-```
-
-This removes the godmode skill, the hook, the flag file, and the `settings.json` entry. It leaves the `best-tool` skill in place (useful on its own); delete `~/.claude/skills/best-tool` manually if you want it gone too.
 
 ## Português
 
